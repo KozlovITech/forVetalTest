@@ -51,7 +51,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     element: '',
     newLeft: 0,
     newTop: 0,
-
+    pressCount: 0,
+    isTimerStarted: false,
   )) {
     on<ChangeBackgroundColorEvent>((event, emit) {
       final backColor = Color(Random().nextInt(0xFFFFFFFF)).withOpacity(1.0);
@@ -62,7 +63,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         element: '',
         newLeft: 0,
         newTop: 0,
-
+        pressCount: 0,
       ));
     });
 
@@ -75,7 +76,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         element: '',
         newLeft: 0,
         newTop: 0,
-
+        pressCount: 0,
       ));
     });
 
@@ -93,6 +94,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final _newLeft = Random().nextDouble() * maxLeft;
       final _newTop = Random().nextDouble() * maxTop;
 
+      _pressCount++;
+      _tapCount++;
       emit(AppState(
         backgroundColor: state.backgroundColor,
         textColor: state.textColor,
@@ -100,9 +103,87 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         element: _element,
         newLeft: _newLeft,
         newTop: _newTop,
-
+        pressCount: _pressCount,
       ));
     });
+
+    on<StopTimerEvent>((event, emit) {
+      stopTimer();
+    });
+
+    on<StartTimerAndShowImages>((event, emit) {
+      bool _isTimerStarted = true;
+      bool _isShowingTime = false;
+
+      emit(AppState(
+        backgroundColor: state.backgroundColor,
+        textColor: state.textColor,
+        list: [],
+        element: '',
+        newLeft: 0,
+        newTop: 0,
+        pressCount: 0,
+        isTimerStarted: _isTimerStarted,
+        isShowingTime: _isShowingTime,
+      ));
+
+      AppBloc.timerValue.value = 0;
+      AppBloc.startTimer();
+    });
+
+    on<ResetProcess>((event, emit) {
+      bool _isTimerStarted = false;
+      bool _isShowingTime = false;
+      int _tapcounts = 0;
+      final BuildContext context = event.context;
+      emit(AppState(
+        backgroundColor: state.backgroundColor,
+        textColor: state.textColor,
+        list: [],
+        element: '',
+        newLeft: 0,
+        newTop: 0,
+        pressCount: 0,
+        isTimerStarted: _isTimerStarted,
+        isShowingTime: _isShowingTime,
+        tapCount: _tapcounts,
+      ));
+      context.read<AppBloc>().add(StartTimerAndShowImages(context: context));
+      context.read<AppBloc>().stopTimer();
+    });
+
+    on<ShowTimeAndReset>((event, emit) {
+      bool _isShowingTime = true;
+      int _timerValueAfter10Taps = AppBloc.timerValue.value;
+      final BuildContext context = event.context;
+      emit(AppState(
+        backgroundColor: state.backgroundColor,
+        textColor: state.textColor,
+        list: [],
+        element: '',
+        newLeft: 0,
+        newTop: 0,
+        pressCount: 0,
+        isShowingTime: _isShowingTime,
+        timerValueAfter10Taps: _timerValueAfter10Taps,
+      ));
+      context.read<AppBloc>().stopTimer();
+    });
+
+    on<UpdateTapCount>((event, emit) {
+    stopTimer();
+    emit(AppState(
+        backgroundColor: state.backgroundColor,
+        textColor: state.textColor,
+        list: [],
+        element: '',
+        newLeft: 0,
+        newTop: 0,
+        pressCount: 0,
+        tapCount: event.tapCount
+    ));
+  });
+
 
   }
 }

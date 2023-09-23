@@ -7,7 +7,11 @@ class AppState extends Equatable {
   final String element;
   final double newTop;
   final double newLeft;
-
+  final int pressCount;
+  final int tapCount;
+  final int timerValueAfter10Taps;
+  final bool isTimerStarted;
+  final bool isShowingTime;
 
   AppState({
     required this.backgroundColor,
@@ -16,7 +20,11 @@ class AppState extends Equatable {
     required this.element,
     required this.newTop,
     required this.newLeft,
-
+    required this.pressCount,
+    this.tapCount = 0,
+    this.timerValueAfter10Taps = 0,
+    this.isTimerStarted = false,
+    this.isShowingTime = false,
   });
 
   @override
@@ -27,6 +35,10 @@ class AppState extends Equatable {
     element,
     newTop,
     newLeft,
-
+    pressCount,
+    tapCount,
+    timerValueAfter10Taps,
+    isTimerStarted,
+    isShowingTime,
   ];
 }

@@ -41,9 +41,9 @@ class ShowTimeAndReset extends AppEvent {
 }
 
 class UpdateTapCount extends AppEvent {
-   final int tapCount ;
+   int tapCount ;
 
-  const UpdateTapCount({required this.tapCount});
+   UpdateTapCount({required this.tapCount});
 
   @override
   List<Object> get props => [tapCount];

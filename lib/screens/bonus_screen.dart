@@ -12,112 +12,83 @@ class BonusScreen extends StatefulWidget {
 }
 
 class _BonusScreenState extends State<BonusScreen> {
-  int tapCount = 0;
-  int timerValueAfter10Taps = 0;
-  bool isTimerStarted = false;
-  bool isShowingTime = false;
-
   @override
   void initState() {
     super.initState();
   }
-
-  void startTimerAndShowImages() {
-    setState(() {
-      isTimerStarted = true;
-      isShowingTime = false; // Скинути прапорець, щоб приховати відображення часу
-    });
-
-    // Додайте скидання значення таймера до 0
-    AppBloc.timerValue.value = 0;
-
-    AppBloc.startTimer();
-  }
-
-  void resetProcess() {
-    setState(() {
-      isTimerStarted = false;
-      tapCount = 0;
-      isShowingTime = false;
-    });
-    startTimerAndShowImages();
-    // Create an instance of AppBloc and call the stopTimer method
-    context.read<AppBloc>().stopTimer();
-  }
-
-  void showTimeAndReset() {
-    setState(() {
-      isShowingTime = true; // Show the time display
-      timerValueAfter10Taps = AppBloc.timerValue.value;
-    });
-    context.read<AppBloc>().stopTimer();
-  }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(20, 24, 35, 1),
       appBar: AppBar(
-        // title: Text('Bonus Screen'),
         backgroundColor: const Color.fromRGBO(20, 24, 35, 1),
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: Container(
-        child: Stack(
-          children: [
-            if (!isTimerStarted && !isShowingTime)
-              Center(
-                child: Column(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text("Try to catch the cat. The image of the cat will appear randomly, then you need to catch it 10 times.",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-
-                    ElevatedButton(
-                      onPressed: startTimerAndShowImages,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(240, 83, 21, 1),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          "Start",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+      body: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          bool isTimerStarted = state.isTimerStarted;
+           bool isShowingTime = state.isShowingTime;
+          int tapCount = state.tapCount;
+          int timerValueAfter10Taps = state.timerValueAfter10Taps;
+          return Container(
+            child: Stack(
+              children: [
+                if (!isTimerStarted && !isShowingTime)
+                  Center(
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Text(
+                            "Try to catch the cat. The image of the cat will appear randomly, then you need to catch it 10 times.",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      ),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<AppBloc>().add(
+                                StartTimerAndShowImages(context: context));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                            const Color.fromRGBO(240, 83, 21, 1),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              "Start",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-
-                  ],
-                ),
-              ),
-            if (isTimerStarted && !isShowingTime)
-              GestureDetector(
-                onTap: () {
-                  tapCount++;
-                  context.read<AppBloc>().add(ChangeCat(context: context));
-                  context.read<AppBloc>().stopTimer();
-
-                  if (tapCount == 10) {
-                    showTimeAndReset();
-                  }
-                },
-                child: BlocBuilder<AppBloc, AppState>(
-                  builder: (context, state) {
-                    print(state.element);
-                    return Stack(
+                  ),
+                if (isTimerStarted && !isShowingTime && tapCount < 10)
+                  GestureDetector(
+                    onTap: () {
+                      tapCount++;
+                      if (tapCount == 10) {
+                        context.read<AppBloc>().add(
+                            ShowTimeAndReset(context: context)
+                        );
+                      } else {
+                        context.read<AppBloc>().add(
+                            ChangeCat(context: context)
+                        );
+                      }
+                    },
+                    child: Stack(
                       children: [
                         Container(
                           margin: EdgeInsets.only(
@@ -135,46 +106,53 @@ class _BonusScreenState extends State<BonusScreen> {
                           ),
                         ),
                       ],
-                    );
-                  },
-                ),
-              ),
-            if (isShowingTime)
-              Align(
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Your result: $timerValueAfter10Taps sec',
-                      style: const TextStyle(fontSize: 24,
-                        color: Colors.white,
-                      ),
                     ),
-                    const SizedBox(height: 15,),
-                    ElevatedButton(
-                      onPressed: resetProcess,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(240, 83, 21, 1),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          "Restart",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
+                  ),
+                if (isShowingTime)
+                  Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Your result: $timerValueAfter10Taps sec',
+                          style: const TextStyle(
+                            fontSize: 24,
                             color: Colors.white,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<AppBloc>().add(
+                                ResetProcess(context: context));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                            const Color.fromRGBO(240, 83, 21, 1),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              "Restart",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-          ],
-        ),
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

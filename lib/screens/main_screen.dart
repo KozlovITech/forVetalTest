@@ -3,28 +3,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:solid_software_test_app/bloc/app_bloc.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatelessWidget {
+   MainScreen({super.key});
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-
-class _MainScreenState extends State<MainScreen> {
   late AppState state;
-
+   bool isShadeOfWhite(Color color) {
+     final brightness = ThemeData.estimateBrightnessForColor(color);
+     return brightness == Brightness.light;
+   }
   @override
   Widget build(BuildContext context) {
     state = context.watch<AppBloc>().state;
 
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
         backgroundColor: state.backgroundColor,
         leading: Builder(
         builder: (BuildContext context) {
-      final isWhiteBackground = state.backgroundColor == Colors.white;
-      final iconColor = isWhiteBackground ? Colors.black : Colors.white;
+      final isArrowBlack = isShadeOfWhite(state.backgroundColor);
+      final iconColor = isArrowBlack ? Colors.black : Colors.white;
       return IconButton(
         icon: Icon(Icons.arrow_back, color: iconColor),
         onPressed: () {
@@ -33,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
       );
     },
     ),
-      ),
+        ),
       body: Center(
         child: GestureDetector(
           onTap: () {

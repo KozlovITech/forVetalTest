@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const MainScreen()),
+                      builder: (context) => MainScreen()),
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Color.fromRGBO(20, 24, 35, 1)),

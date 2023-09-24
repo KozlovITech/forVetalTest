@@ -21,7 +21,18 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: state.backgroundColor,
-        iconTheme: IconThemeData(color: Colors.white),
+        leading: Builder(
+        builder: (BuildContext context) {
+      final isWhiteBackground = state.backgroundColor == Colors.white;
+      final iconColor = isWhiteBackground ? Colors.black : Colors.white;
+      return IconButton(
+        icon: Icon(Icons.arrow_back, color: iconColor),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+    },
+    ),
       ),
       body: Center(
         child: GestureDetector(

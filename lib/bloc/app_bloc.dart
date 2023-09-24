@@ -22,7 +22,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   static int _tapCount = 0;
   static const int maxPressCount = 10;
   Timer? _timer;
-
+  static int timerValueInSeconds = 0;
+  static int timerValueInMilliseconds = 0;
   static ValueNotifier<int> timerValue = ValueNotifier<int>(0);
 
   void stopTimer() {
@@ -37,15 +38,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _tapCount = 0;
     _timer?.cancel();
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      timerValue.value += 1;
-      print("Timer Value: ${timerValue
-          .value}");
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      timerValueInMilliseconds += 100; // Update timer by 100 milliseconds
+      if (timerValueInMilliseconds >= 1000) {
+        timerValueInMilliseconds = 0;
+        timerValueInSeconds++;
+      }
       if (_tapCount >= maxPressCount) {
         timer.cancel();
       }
     });
   }
+
 
 
 

@@ -28,7 +28,7 @@ class _BonusScreenState extends State<BonusScreen> {
       body: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           bool isTimerStarted = state.isTimerStarted;
-           bool isShowingTime = state.isShowingTime;
+          bool isShowingTime = state.isShowingTime;
           int tapCount = state.tapCount;
           int timerValueAfter10Taps = state.timerValueAfter10Taps;
           return Container(
@@ -51,12 +51,23 @@ class _BonusScreenState extends State<BonusScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            context.read<AppBloc>().add(
-                                StartTimerAndShowImages(context: context));
+                            print("Is timeSterted before startTimerAndShowImages $isTimerStarted");
+                            print("Is TapCount before startTimerAndShowImages $tapCount");
+                            print("Is time Sterted before startTimerAndShowImages $isShowingTime");
+
+                            context
+                                .read<AppBloc>()
+                                .add(StartTimerAndShowImages(context: context));
+
+
+                            print("Is timeSterted after startTimerAndShowImages $isTimerStarted");
+                            print("Is TapCount after startTimerAndShowImages $tapCount");
+                            print("Is time Sterted after startTimerAndShowImages $isShowingTime");
+
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                            const Color.fromRGBO(240, 83, 21, 1),
+                                const Color.fromRGBO(240, 83, 21, 1),
                           ),
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
@@ -77,17 +88,27 @@ class _BonusScreenState extends State<BonusScreen> {
                 if (isTimerStarted && !isShowingTime && tapCount < 10)
                   GestureDetector(
                     onTap: () {
+                      print("Is timeSterted before GestureDetector $isTimerStarted");
+                      print("Is TapCount before GestureDetector $tapCount");
+                      print("Is isShowingTime before GestureDetector $isShowingTime");
+
                       tapCount++;
-                      if (tapCount == 10) {
+                      context.read<AppBloc>().add(ChangeCat(context: context));
+
+
+
+                      if (state.tapCount == 10) {
+                        isShowingTime = true;
                         context.read<AppBloc>().add(
                             ShowTimeAndReset(context: context)
                         );
-                      } else {
-                        context.read<AppBloc>().add(
-                            ChangeCat(context: context)
-                        );
                       }
-                    },
+
+                      print("Is timeSterted after GestureDetector $isTimerStarted");
+                      print("Is TapCount after GestureDetector $tapCount");
+                      print("Is isShowingTime after GestureDetector $isShowingTime");
+                      print(AppBloc.timerValue.value);
+                      },
                     child: Stack(
                       children: [
                         Container(
@@ -115,7 +136,7 @@ class _BonusScreenState extends State<BonusScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Your result: $timerValueAfter10Taps sec',
+                          'Your result: ${AppBloc.timerValue.value} sec',
                           style: const TextStyle(
                             fontSize: 24,
                             color: Colors.white,
@@ -126,12 +147,22 @@ class _BonusScreenState extends State<BonusScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            context.read<AppBloc>().add(
-                                ResetProcess(context: context));
+                            print("Is timeSterted before ResetProcess $isTimerStarted");
+                            print("Is TapCount before ResetProcess $tapCount");
+                            print("Is time Sterted before ResetProcess $isShowingTime");
+
+                            context
+                                .read<AppBloc>()
+                                .add(ResetProcess(context: context));
+
+                            print("Is timeSterted after ResetProcess $isTimerStarted");
+                            print("Is TapCount after ResetProcess $tapCount");
+                            print("Is time Sterted after ResetProcess $isShowingTime");
+
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                            const Color.fromRGBO(240, 83, 21, 1),
+                                const Color.fromRGBO(240, 83, 21, 1),
                           ),
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),

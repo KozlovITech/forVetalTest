@@ -7,7 +7,7 @@ class AppState extends Equatable {
   final String element;
   final double newTop;
   final double newLeft;
-  final int pressCount;
+  int pressCount;
   final int tapCount;
   final int timerValueAfter10Taps;
   final bool isTimerStarted;
@@ -20,7 +20,7 @@ class AppState extends Equatable {
     required this.element,
     required this.newTop,
     required this.newLeft,
-    required this.pressCount,
+     this.pressCount = 0,
     this.tapCount = 0,
     this.timerValueAfter10Taps = 0,
     this.isTimerStarted = false,

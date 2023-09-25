@@ -2,8 +2,7 @@ part of 'app_bloc.dart';
 
 ///A part of Bloc
 class AppState extends Equatable {
-  final Color backgroundColor;
-  final Color textColor;
+
   final List<String> list;
   final String element;
   final double newTop;
@@ -16,8 +15,7 @@ class AppState extends Equatable {
 
   @override
   List<Object?> get props => [
-    backgroundColor,
-    textColor,
+
     list,
     element,
     newTop,
@@ -30,8 +28,7 @@ class AppState extends Equatable {
   ];
   ///Constructor
 const  AppState({
-    required this.backgroundColor,
-    required this.textColor,
+
     required this.list,
     required this.element,
     required this.newTop,

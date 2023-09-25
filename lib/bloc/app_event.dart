@@ -6,13 +6,6 @@ abstract class AppEvent {
   const AppEvent();
 }
 
-class ChangeBackgroundColorEvent extends AppEvent {
-  const ChangeBackgroundColorEvent();
-}
-
-class ChangeTextColorEvent extends AppEvent {
-  const ChangeTextColorEvent();
-}
 
 class ChangeCat extends AppEvent {
   final BuildContext context;

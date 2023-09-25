@@ -62,8 +62,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 ///Construcor
   AppBloc()
       : super(AppState(
-          backgroundColor: Colors.white,
-          textColor: Colors.black,
           list: [],
           element: '',
           newLeft: 0,
@@ -71,31 +69,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           pressCount: 0,
           isTimerStarted: false,
         )) {
-    on<ChangeBackgroundColorEvent>((event, emit) {
-      final backColor = Color(Random().nextInt(0xFFFFFFFF)).withOpacity(1.0);
-      emit(AppState(
-        backgroundColor: backColor,
-        textColor: state.textColor,
-        list: [],
-        element: '',
-        newLeft: 0,
-        newTop: 0,
-        pressCount: 0,
-      ));
-    });
-
-    on<ChangeTextColorEvent>((event, emit) {
-      final textColor = Color(Random().nextInt(0xFFFFFFFF)).withOpacity(1.0);
-      emit(AppState(
-        backgroundColor: state.backgroundColor,
-        textColor: textColor,
-        list: [],
-        element: '',
-        newLeft: 0,
-        newTop: 0,
-        pressCount: 0,
-      ));
-    });
 
     on<ChangeCat>((event, emit) async {
       final String _element = _list[Random().nextInt(_list.length)];
@@ -119,8 +92,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         _isShowingTimer = false;
       }
       emit(AppState(
-        backgroundColor: state.backgroundColor,
-        textColor: state.textColor,
+
         list: _list,
         element: _element,
         newLeft: _newLeft,
@@ -147,8 +119,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       // Call startTimer on the instance
       appBloc.startTimer();
       emit(AppState(
-        backgroundColor: state.backgroundColor,
-        textColor: state.textColor,
+
         list: [],
         element: '',
         newLeft: 0,
@@ -171,8 +142,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
       final BuildContext context = event.context;
       emit(AppState(
-        backgroundColor: state.backgroundColor,
-        textColor: state.textColor,
+
         list: [],
         element: '',
         newLeft: 0,
@@ -194,8 +164,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final BuildContext context = event.context;
       context.read<AppBloc>().stopTimer();
       emit(AppState(
-        backgroundColor: state.backgroundColor,
-        textColor: state.textColor,
+
         list: [],
         element: '',
         newLeft: 0,
@@ -209,8 +178,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<UpdateTapCount>((event, emit) {
       stopTimer();
       emit(AppState(
-          backgroundColor: state.backgroundColor,
-          textColor: state.textColor,
+
           list: [],
           element: '',
           newLeft: 0,

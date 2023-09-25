@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solid_software_test_app/bloc/app_bloc.dart';
 import 'package:solid_software_test_app/home_page.dart';
 import 'package:solid_software_test_app/themes/color_theme.dart';
+import 'package:solid_software_test_app/bloc/main_screen_bloc/main_screen_bloc.dart';
 
 void main() {
   runApp(
     MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => AppBloc()),
+      BlocProvider(create: (context) => MainScreenBloc()),
     ],
     child: const MyApp(),
   ),

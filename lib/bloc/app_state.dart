@@ -1,5 +1,6 @@
 part of 'app_bloc.dart';
 
+///A part of Bloc
 class AppState extends Equatable {
   final Color backgroundColor;
   final Color textColor;
@@ -7,25 +8,11 @@ class AppState extends Equatable {
   final String element;
   final double newTop;
   final double newLeft;
-  int pressCount;
+  final int pressCount;
   final int tapCount;
   final int timerValueAfter10Taps;
   final bool isTimerStarted;
   final bool isShowingTime;
-
-  AppState({
-    required this.backgroundColor,
-    required this.textColor,
-    required this.list,
-    required this.element,
-    required this.newTop,
-    required this.newLeft,
-     this.pressCount = 0,
-    this.tapCount = 0,
-    this.timerValueAfter10Taps = 0,
-    this.isTimerStarted = false,
-    this.isShowingTime = false,
-  });
 
   @override
   List<Object?> get props => [
@@ -41,4 +28,20 @@ class AppState extends Equatable {
     isTimerStarted,
     isShowingTime,
   ];
+  ///Constructor
+const  AppState({
+    required this.backgroundColor,
+    required this.textColor,
+    required this.list,
+    required this.element,
+    required this.newTop,
+    required this.newLeft,
+     this.pressCount = 0,
+    this.tapCount = 0,
+    this.timerValueAfter10Taps = 0,
+    this.isTimerStarted = false,
+    this.isShowingTime = false,
+  });
+
+
 }

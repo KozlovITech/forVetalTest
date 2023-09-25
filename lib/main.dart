@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solid_software_test_app/bloc/app_bloc.dart';
-import 'package:solid_software_test_app/screens/main_screen.dart';
-import 'home_page.dart';
+import 'package:solid_software_test_app/home_page.dart';
+import 'package:solid_software_test_app/themes/color_theme.dart';
 
 void main() {
   runApp(
@@ -10,25 +10,25 @@ void main() {
     providers: [
       BlocProvider(create: (context) => AppBloc()),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ),
   );
 }
-
+  ///MyApp
 class MyApp extends StatelessWidget {
+  ///Constructor
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Solid Software Test App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorTheme.colorScheme,
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

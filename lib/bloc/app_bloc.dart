@@ -1,14 +1,14 @@
-import 'dart:math';
 import 'dart:async';
+import 'dart:math';
 import 'package:equatable/equatable.dart';
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
 
+///Bloc
+///
 class AppBloc extends Bloc<AppEvent, AppState> {
   final List<String> _list = [
     'assets/img/cat_1.svg',
@@ -20,12 +20,21 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   static int _pressCount = 0;
   static int _tapCount = 0;
+
+  ///Max Press to image
   static const int maxPressCount = 10;
   Timer? _timer;
+
+  ///Variable for timer
   static int timerValueInSeconds = 0;
+
+  ///Variable for timer
   static int timerValueInMilliseconds = 0;
+
+  ///Variable for timer
   static ValueNotifier<int> timerValue = ValueNotifier<int>(0);
 
+  ///Function Stop Timer
   void stopTimer() {
     if (_pressCount >= maxPressCount) {
       _timer?.cancel();
@@ -33,6 +42,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
+  ///Function Start Timer
   void startTimer() {
     _pressCount = 0;
     _tapCount = 0;
@@ -49,22 +59,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       }
     });
   }
-
-
-
-
+///Construcor
   AppBloc()
       : super(AppState(
-    backgroundColor: Colors.white,
-    textColor: Colors.black,
-    list: [],
-    element: '',
-    newLeft: 0,
-    newTop: 0,
-    pressCount: 0,
-    isTimerStarted: false,
-  )) {
-
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          list: [],
+          element: '',
+          newLeft: 0,
+          newTop: 0,
+          pressCount: 0,
+          isTimerStarted: false,
+        )) {
     on<ChangeBackgroundColorEvent>((event, emit) {
       final backColor = Color(Random().nextInt(0xFFFFFFFF)).withOpacity(1.0);
       emit(AppState(
@@ -107,7 +113,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       _tapCount++;
       bool _isTimerStarted = true;
       bool _isShowingTimer = false;
-      if(_tapCount == 10){
+      if (_tapCount == 10) {
         _isShowingTimer = true;
       } else {
         _isShowingTimer = false;
@@ -150,16 +156,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         pressCount: 0,
         isTimerStarted: _isTimerStarted,
         isShowingTime: _isShowingTime,
-        timerValueAfter10Taps:_timervalue,
+        timerValueAfter10Taps: _timervalue,
       ));
-
-
     });
 
     on<ResetProcess>((event, emit) {
       bool _isTimerStarted = false;
       bool _isShowingTime = false;
       int _tapcounts = 0;
+
+      // Обнулення значень таймера
+      timerValueInSeconds = 0;
+      timerValueInMilliseconds = 0;
+
       final BuildContext context = event.context;
       emit(AppState(
         backgroundColor: state.backgroundColor,
@@ -177,7 +186,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       context.read<AppBloc>().stopTimer();
     });
 
+    /// Base of all things.
     on<ShowTimeAndReset>((event, emit) {
+      /// Initialize the base.
       bool _isShowingTime = true;
       int _timerValueAfter10Taps = AppBloc.timerValue.value;
       final BuildContext context = event.context;
@@ -193,7 +204,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         isShowingTime: _isShowingTime,
         timerValueAfter10Taps: _timerValueAfter10Taps,
       ));
-
     });
 
     on<UpdateTapCount>((event, emit) {
@@ -206,10 +216,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           newLeft: 0,
           newTop: 0,
           pressCount: 0,
-          tapCount: event.tapCount
-      ));
+          tapCount: event.tapCount));
     });
-
-
   }
 }
